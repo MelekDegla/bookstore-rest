@@ -11,3 +11,8 @@ spring:
       ddl-auto: update
 server:
   port: 8082
+  error:
+    include-exception: true
+    include-message: always
+    include-stacktrace: always
+
