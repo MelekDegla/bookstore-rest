@@ -1,13 +1,17 @@
 package tn.esprit.bookstore.controller;
 
+import com.sun.istack.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.bookstore.entities.PBook;
 import tn.esprit.bookstore.exceptions.SavingIdException;
 import tn.esprit.bookstore.services.IPbookService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 @Controller
 @RequestMapping("/book/")
@@ -18,6 +22,7 @@ public class PbookController {
     public PbookController(IPbookService pbookService) {
         this.pbookService = pbookService;
     }
+
 
     @GetMapping("listbook")
     public ResponseEntity<?> findAll(){
@@ -58,6 +63,39 @@ public class PbookController {
     public ResponseEntity<?> findByCategory(@PathVariable("id") Long id){
         return ResponseEntity.ok(pbookService.findByCategory(id));
     }
+
+    @PostMapping("file")
+    @ResponseBody
+    public PBook uploddimg (@RequestParam("file") @Nullable MultipartFile file , @RequestParam("book") Long id ) {
+        PBook book =pbookService.findById(id);
+        if(file==null) {
+            book.setImageUrl("defaultPic.png");
+            pbookService.save(book);
+
+        }else {
+
+            try {
+                ClassLoader classLoader = getClass().getClassLoader();
+                String path =  classLoader.getResource(".").getFile();
+                //File f = new File(classLoader.getResource(".").getFile() +"\\public\\resources\\UplodeFile\\UplodeImage\\" +"image" + id+file.getOriginalFilename());
+                File f = new File("C:\\upload\\" +"image" + id+file.getOriginalFilename());
+                file.transferTo(f);
+                book.setImageUrl("image"+id+file.getOriginalFilename());
+                pbookService.save(book);
+
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+
+        return(book);
+    }
+
 
 
 }

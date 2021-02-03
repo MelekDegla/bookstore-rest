@@ -1,5 +1,6 @@
 package tn.esprit.bookstore.services;
 
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.bookstore.entities.PBook;
 
 import java.util.List;
