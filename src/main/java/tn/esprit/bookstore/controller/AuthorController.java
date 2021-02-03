@@ -2,13 +2,17 @@ package tn.esprit.bookstore.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.bookstore.entities.Author;
 import tn.esprit.bookstore.entities.Category;
 import tn.esprit.bookstore.exceptions.SavingIdException;
 import tn.esprit.bookstore.services.IAuthorService;
 import tn.esprit.bookstore.services.ICategoryService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -53,6 +57,33 @@ public class AuthorController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         authorService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/file")
+    @ResponseBody
+    public Author  uploddimg (@RequestParam("file") @Nullable MultipartFile file , @RequestParam("author") Long id ) {
+        Author author =authorService.findById(id);
+        if(file==null) {
+            author.setPhotoUrl("defaultPic.png");
+            authorService.save(author);
+        }else {
+            try {
+                ClassLoader classLoader = getClass().getClassLoader();
+                String path =  classLoader.getResource(".").getFile();
+                //File f = new File(classLoader.getResource(".").getFile() +"\\public\\resources\\UplodeFile\\UplodeImage\\" +"image" + id+file.getOriginalFilename());
+                File f = new File("C:\\upload\\" +"image" + id+file.getOriginalFilename());
+                file.transferTo(f);
+                author.setPhotoUrl("image"+id+file.getOriginalFilename());
+                authorService.save(author);
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return(author);
     }
 
 }
