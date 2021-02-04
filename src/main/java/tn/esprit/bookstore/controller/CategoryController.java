@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.bookstore.entities.Category;
 import tn.esprit.bookstore.exceptions.SavingIdException;
+import tn.esprit.bookstore.repository.CategoryRepository;
 import tn.esprit.bookstore.services.ICategoryService;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequestMapping("api/category/")
 public class CategoryController {
     final ICategoryService categoryService;
+
 
 
     public CategoryController(ICategoryService categoryService) {
@@ -54,4 +56,7 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+
 }
+
+

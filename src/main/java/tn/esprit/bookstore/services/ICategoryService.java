@@ -12,4 +12,5 @@ public interface ICategoryService {
     public List<Category> findAll();
     public void deleteById(Long id);
     public Page<Category> findAll(Pageable pageable);
+
 }

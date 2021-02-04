@@ -1,35 +1,103 @@
 package tn.esprit.bookstore.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
-public class Category {
-
+@Data
+@AllArgsConstructor
+public class Category  {
     @Id
-    @GeneratedValue
-    private Long id;
+    @Column(name = "category_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    @Column(length = 64)
+    private String name;
+
+    @OneToOne
+    @JoinColumn(name = "parent_id")
+    private Category parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private Set<Category> children = new HashSet<>();
+
+    public Category(String name, Category parent) {
+        this.name = name;
+        this.parent = parent;
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public Set<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<Category> children) {
+        this.children = children;
+    }
+
+    public void addChild(Category children) {
+        this.children.add(children);
+    }
+
+  /*  @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    public long id;
+
+    @Column(nullable=false )
     private String title;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+
+    @Column(nullable=false )
     private String description;
+
 
     @OneToMany(mappedBy = "category")
     private List<EBook> eBooks;
 
     @OneToMany(mappedBy = "category")
     private List<PBook> pBooks;
-
-    public Category(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    public Category() {
-    }
 
 
     public Long getId() {
@@ -70,5 +138,6 @@ public class Category {
 
     public void setpBooks(List<PBook> pBooks) {
         this.pBooks = pBooks;
-    }
+    }*/
 }
+
