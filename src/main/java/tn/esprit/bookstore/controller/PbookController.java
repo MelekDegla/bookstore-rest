@@ -3,6 +3,7 @@ package tn.esprit.bookstore.controller;
 import com.sun.istack.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,13 +13,17 @@ import tn.esprit.bookstore.services.IPbookService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 @Controller
 @RequestMapping("/book/")
 public class PbookController {
     final IPbookService pbookService;
-
-
+    long bookFreeId;
+     double bookPrice;
     public PbookController(IPbookService pbookService) {
         this.pbookService = pbookService;
     }
@@ -96,6 +101,32 @@ public class PbookController {
         return(book);
     }
 
+    @Scheduled(fixedDelay=20000)
+    public void freebookRand(){
+        List<PBook> books =pbookService.findAll();
+        int nbBooks= books.size();
+        long nb= nbBooks;
+        long rande = ThreadLocalRandom.current().nextLong(nb);
+        PBook bookshosen = books.get((int) rande);
+         bookFreeId = bookshosen.getId();
+        bookPrice =  bookshosen.getPrice();
+        if (bookPrice!=0){
+            bookshosen.setPrice(0);
+        }
+        pbookService.save(bookshosen);
+        System.out.println("free book");
 
-
+    }
+    @Scheduled(fixedDelay=20000)
+    public void endFreebookRand() {
+        PBook bookshosen = pbookService.findById(bookFreeId);
+        bookshosen.setPrice(bookPrice);
+        pbookService.save(bookshosen);
+        System.out.println("updated");
+    }
 }
+
+
+
+
+
