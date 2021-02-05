@@ -1,12 +1,8 @@
 package tn.esprit.bookstore.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -14,19 +10,29 @@ import java.util.*;
 @AllArgsConstructor
 public class Category  {
     @Id
-    @Column(name = "category_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     @Column(length = 64)
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "parent_id")
+    @Column(nullable=false )
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name="parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
     private Set<Category> children = new HashSet<>();
+
+    @OneToMany(mappedBy = "category")
+    private List<EBook> eBooks;
+
+    @OneToMany(mappedBy = "category")
+    private List<PBook> pBooks;
+
+
 
     public Category(String name, Category parent) {
         this.name = name;
@@ -40,11 +46,11 @@ public class Category  {
     public Category() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,6 +80,21 @@ public class Category  {
 
     public void addChild(Category children) {
         this.children.add(children);
+    }
+    public List<EBook> geteBooks() {
+        return eBooks;
+    }
+
+    public void seteBooks(List<EBook> eBooks) {
+        this.eBooks = eBooks;
+    }
+
+    public List<PBook> getpBooks() {
+        return pBooks;
+    }
+
+    public void setpBooks(List<PBook> pBooks) {
+        this.pBooks = pBooks;
     }
 
   /*  @Id

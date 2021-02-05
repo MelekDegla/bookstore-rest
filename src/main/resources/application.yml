@@ -4,6 +4,7 @@ spring:
     username: root
     password:
     properties:
+
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   jpa:
@@ -15,4 +16,5 @@ server:
     include-exception: true
     include-message: always
     include-stacktrace: always
+
 
