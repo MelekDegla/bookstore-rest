@@ -28,6 +28,7 @@ import static tn.esprit.bookstore.entities.utils.Constants.HEADER_STRING;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 
+
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
@@ -55,9 +56,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = userService.loadUserByUsername(username);
 
             if (tokenProvider.validateToken(authToken, userDetails)) {
-//                UsernamePasswordAuthenticationToken authentication =
-//                        tokenProvider.getAuthentication(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+                UsernamePasswordAuthenticationToken authentication =
+                        tokenProvider.getAuthentication(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
+//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
