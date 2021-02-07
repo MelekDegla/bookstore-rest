@@ -33,7 +33,7 @@ public class AuthenticationController {
     @RequestMapping(value = "token", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser (@RequestBody LoginUser loginUser) throws AuthenticationException {
     final Authentication authentication = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(loginUser.getLogin(),
+            .authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
                     loginUser.getPassword())
     );
         SecurityContextHolder.getContext().setAuthentication(authentication);
