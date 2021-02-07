@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.bookstore.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-    User findUserByUsername(String username);
+    User findByUsername(String username);
 
 }

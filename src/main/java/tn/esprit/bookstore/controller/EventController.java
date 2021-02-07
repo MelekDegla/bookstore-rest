@@ -3,6 +3,7 @@ package tn.esprit.bookstore.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.bookstore.entities.Event;
 import tn.esprit.bookstore.entities.Order;
@@ -25,6 +26,7 @@ public class EventController {
     }
 
     @PostMapping
+    @PreAuthorize("ROLE_ADMIN")
     public ResponseEntity<?> add(@RequestBody Event event){
 
             Optional<Event> event1 = Optional.of(eventService.add(event));
