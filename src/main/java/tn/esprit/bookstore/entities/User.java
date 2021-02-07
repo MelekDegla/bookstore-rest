@@ -50,6 +50,11 @@ public class User {
     public User() {
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(String username, String password, String email, String phone, String address,
                 LocalDate birthdate, String name, String lastname, String photoUrl) {
         this.username = username;

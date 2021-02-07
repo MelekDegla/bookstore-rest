@@ -1,13 +1,11 @@
 package tn.esprit.bookstore.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Data
-@AllArgsConstructor
+
 public class Category  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +42,39 @@ public class Category  {
     }
 
     public Category() {
+    }
+
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Category(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Category(long id, String name, String description, Category parent, Set<Category> children, List<EBook> eBooks, List<PBook> pBooks) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.parent = parent;
+        this.children = children;
+        this.eBooks = eBooks;
+        this.pBooks = pBooks;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {

@@ -11,6 +11,5 @@ public class SavingIdException extends ResponseStatusException {
     public SavingIdException(HttpStatus status, String msg) {
         super(status, msg );
 
-
     }
 }
