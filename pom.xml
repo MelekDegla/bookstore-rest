@@ -39,6 +39,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+<<<<<<< HEAD
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+=======
             <groupId>org.apache.struts</groupId>
             <artifactId>struts-core</artifactId>
             <version>1.3.8</version>
@@ -48,6 +53,7 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+>>>>>>> 685f396ff94352ec0604f73f7389242cd3cfa199
         </dependency>
     </dependencies>
 
