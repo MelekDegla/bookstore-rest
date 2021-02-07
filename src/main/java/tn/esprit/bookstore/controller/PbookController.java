@@ -101,7 +101,7 @@ public class PbookController {
         return(book);
     }
 
-    @Scheduled(fixedDelay=20000)
+   /* @Scheduled(fixedDelay=20000)
     public void freebookRand(){
         List<PBook> books =pbookService.findAll();
         int nbBooks= books.size();
@@ -124,7 +124,7 @@ public class PbookController {
         pbookService.save(bookshosen);
         System.out.println("updated");
     }
-
+*/
 }
 
 
