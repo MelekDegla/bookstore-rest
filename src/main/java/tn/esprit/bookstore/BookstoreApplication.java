@@ -37,10 +37,12 @@ public class BookstoreApplication {
             roleService.save(new Role(null, "delivery_man"));
             roleService.save(new Role(null, "user"));
         }
+        if(userService.findAll().isEmpty()){
+            List<Role> rolesAdmin = new ArrayList<>();
+            rolesAdmin.add(roleService.findByName("admin"));
+            userService.save(new User("admin", "admin", rolesAdmin ));
+        }
 
-//            List<Role> rolesAdmin = new ArrayList<>();
-//            rolesAdmin.add(roleService.findByName("user"));
-//            userService.save(new User("user", "user", rolesAdmin ));
 
 
 
