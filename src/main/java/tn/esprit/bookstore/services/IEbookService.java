@@ -15,4 +15,7 @@ public interface IEbookService {
     void deleteById(Long id);
     List<EBook> findByCategory(Long id );
 
+       List<EBook> filterBooks(String pattern);
+
+
 }

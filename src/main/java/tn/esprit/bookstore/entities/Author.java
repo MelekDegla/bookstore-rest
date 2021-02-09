@@ -19,7 +19,6 @@ public class Author {
     private LocalDate birthdate;
 
     private String photoUrl;
-
     @OneToMany(mappedBy = "author")
     @JsonIgnoreProperties("author")
 
