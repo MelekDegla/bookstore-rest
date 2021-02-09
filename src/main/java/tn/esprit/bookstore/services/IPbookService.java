@@ -1,6 +1,7 @@
 package tn.esprit.bookstore.services;
 
 import org.springframework.web.multipart.MultipartFile;
+import tn.esprit.bookstore.entities.Book;
 import tn.esprit.bookstore.entities.PBook;
 
 import java.util.List;
@@ -16,5 +17,11 @@ public interface IPbookService {
 
     void deleteById(Long id);
     List<PBook> findByCategory(Long id );
+
+    public PBook findBookByTitle(String title);
+
+    public List<PBook> showRelatedBooks();
+    public List<PBook> getBooksFilteredByCategories(String categoriesList);
+
 
 }

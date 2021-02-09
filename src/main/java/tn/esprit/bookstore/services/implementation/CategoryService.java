@@ -45,6 +45,10 @@ public class CategoryService implements ICategoryService {
         return categoryRepository.findAll(pageable);
     }
 
+    @Override
+    public Category getCategoryByName(String name) {
+return categoryRepository.findByName(name);
+    }
 
 
 }

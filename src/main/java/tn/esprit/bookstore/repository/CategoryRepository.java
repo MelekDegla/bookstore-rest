@@ -8,6 +8,8 @@ import tn.esprit.bookstore.entities.Category;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Category findByName(String name);
+
     @Query("select distinct c from Category c " +
             "left join fetch c.parent pp " +
             "left join fetch c.children ch " +

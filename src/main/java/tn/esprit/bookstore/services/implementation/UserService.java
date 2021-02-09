@@ -47,6 +47,15 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    public User getAuthenticatedCustomer() {
+        {
+            // TODO Auto-generated method stub
+            Long id = 1l;
+            return userRepository.findById(id).orElse(null);
+        }
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(s);
         if(user == null)
