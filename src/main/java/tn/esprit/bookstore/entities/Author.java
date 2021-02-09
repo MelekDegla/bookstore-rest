@@ -25,7 +25,6 @@ public class Author {
     private List<EBook> eBooks;
     @OneToMany(mappedBy = "author")
     @JsonIgnoreProperties("author")
-
     private List<PBook> pBooks;
 
 

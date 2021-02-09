@@ -52,7 +52,7 @@ public class EbookService implements IEbookService {
       Books.forEach(filteredBooks::add);
 
       filteredBooks = filteredBooks.stream()
-                .filter(b -> (b.getDescription()!=null&& b.getDescription().contains(pattern) )||
+                .filter(b ->  (b.getCategory()!=null&& b.getCategory().getName().contains(pattern) )||(b.getDescription()!=null&& b.getDescription().contains(pattern) )||
                           (b.getAuthor()!= null && b.getAuthor().getName().contains(pattern)) ||
                           ( b.getAuthor()!= null && b.getAuthor().getLastname().contains(pattern))||
                         ( b.getTitle()!=null && b.getTitle().contains(pattern))
