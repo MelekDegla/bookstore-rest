@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
@@ -46,14 +48,26 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
+    @ManyToMany
+    @JoinTable(name = "users_roles",joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn( name = "role_id")})
+    @JsonIgnoreProperties("users")
+    private List<Role> roles;
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, List<Role> roles) {
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 
     public User(String username, String password, String email, String phone, String address,
