@@ -2,13 +2,16 @@ package tn.esprit.bookstore.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tn.esprit.bookstore.entities.Book;
 import tn.esprit.bookstore.entities.EBook;
-import tn.esprit.bookstore.entities.PBook;
 import tn.esprit.bookstore.repository.EbookRepository;
-import tn.esprit.bookstore.repository.PbookRepository;
 import tn.esprit.bookstore.services.IEbookService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.lang.String;
+import java.util.stream.Collectors;
+
 @Service
 
 public class EbookService implements IEbookService {
@@ -40,5 +43,21 @@ public class EbookService implements IEbookService {
     @Override
     public List<EBook> findByCategory(Long id) {
         return ebookRepository.findByCategory(id);
+    }
+
+    @Override
+    public List<EBook> filterBooks(String pattern) {
+        Iterable<EBook> Books = ebookRepository.findAll();
+     List<EBook> filteredBooks = new ArrayList<>();
+      Books.forEach(filteredBooks::add);
+
+      filteredBooks = filteredBooks.stream()
+                .filter(b -> (b.getDescription()!=null&& b.getDescription().contains(pattern) )||
+                          (b.getAuthor()!= null && b.getAuthor().getName().contains(pattern)) ||
+                          ( b.getAuthor()!= null && b.getAuthor().getLastname().contains(pattern))||
+                        ( b.getTitle()!=null && b.getTitle().contains(pattern))
+                )
+                .collect(Collectors.toList());
+        return filteredBooks;
     }
 }

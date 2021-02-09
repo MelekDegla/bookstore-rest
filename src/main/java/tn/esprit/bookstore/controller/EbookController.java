@@ -1,6 +1,7 @@
 package tn.esprit.bookstore.controller;
 
 import com.sun.istack.Nullable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,10 @@ public class EbookController {
     @GetMapping("id/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id){
         return ResponseEntity.ok(ebookService.findById(id));
+    }
+    @GetMapping("crit")
+    public ResponseEntity<?> searchByCrit(@RequestParam("pattern") String Pattern){
+        return ResponseEntity.ok(ebookService.filterBooks(Pattern));
     }
     @PutMapping("updateebook")
     public ResponseEntity<?> update(@RequestBody EBook book){
@@ -113,8 +118,6 @@ public class EbookController {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-
 
         return(book);
     }

@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +19,13 @@ public class Author {
     private LocalDate birthdate;
 
     private String photoUrl;
-
     @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties("author")
+
     private List<EBook> eBooks;
     @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties("author")
+
     private List<PBook> pBooks;
 
 
