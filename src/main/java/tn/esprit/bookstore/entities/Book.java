@@ -1,7 +1,10 @@
 package tn.esprit.bookstore.entities;
 
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,6 +24,9 @@ public class Book {
     private String imageUrl;
 
     private double price;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserBookRating> userBookRatings;
 
     @ManyToOne
     private Author author;
@@ -113,5 +119,25 @@ public class Book {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public Set<UserBookRating> getUserBookRatings() {
+        return userBookRatings;
+    }
+
+    public void setUserBookRatings(Set<UserBookRating> userBookRatings) {
+        this.userBookRatings = userBookRatings;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject response = new JSONObject();
+        response.put("ASIN", String.valueOf(getId()));
+        response.put("title", getTitle());
+      //  response.put("author", getAuthor());
+       // response.put("genre", getCategory());
+
+        return response.toString();
+    }
+
 
 }

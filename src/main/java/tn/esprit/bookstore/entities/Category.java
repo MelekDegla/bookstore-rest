@@ -1,6 +1,8 @@
 package tn.esprit.bookstore.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -22,12 +24,18 @@ public class Category  {
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnoreProperties("parent")
     private Set<Category> children = new HashSet<>();
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties("category")
+
     private List<EBook> eBooks;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties("category" +
+            "")
+
     private List<PBook> pBooks;
 
 

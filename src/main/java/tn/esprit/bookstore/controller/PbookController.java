@@ -1,15 +1,22 @@
 package tn.esprit.bookstore.controller;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.bookstore.entities.PBook;
+import tn.esprit.bookstore.exceptions.ResourceNotFoundException;
 import tn.esprit.bookstore.exceptions.SavingIdException;
+import tn.esprit.bookstore.repository.BookRepository;
+import tn.esprit.bookstore.repository.PbookRepository;
+import tn.esprit.bookstore.repository.UserRepository;
 import tn.esprit.bookstore.services.IPbookService;
+import tn.esprit.bookstore.services.implementation.Recommender;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +31,12 @@ public class PbookController {
     final IPbookService pbookService;
     long bookFreeId;
      double bookPrice;
+    @Autowired
+    Recommender recommender;
+    @Autowired
+    private UserRepository userRepository;
+    private PbookRepository bookRepository;
+
     public PbookController(IPbookService pbookService) {
         this.pbookService = pbookService;
     }
@@ -125,6 +138,21 @@ public class PbookController {
         System.out.println("updated");
     }
 */
+
+    @GetMapping(value = "/recommended", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getRecommendedBooksByUserId(@RequestParam("userId") Long userId)
+            throws ResourceNotFoundException {
+
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User not found!");
+        }
+
+        String recommendedBooks = recommender.recommendedBooks(userId, userRepository, bookRepository);
+
+        return ResponseEntity.ok().body(recommendedBooks);
+    }
+
+
 }
 
 

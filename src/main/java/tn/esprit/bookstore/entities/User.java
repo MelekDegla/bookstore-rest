@@ -1,10 +1,13 @@
 package tn.esprit.bookstore.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -46,6 +49,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserBookRating> userBookRates;
 
     @ManyToMany
     @JoinTable(name = "users_roles",joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn( name = "role_id")})
@@ -192,5 +198,43 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void setUserBookRating(Set<UserBookRating> userBookRates) {
+        this.userBookRates = userBookRates;
+    }
+
+    public Set<UserBookRating> getUserBookRating() {
+        return userBookRates;
+    }
+
+    @Override
+    public String toString() {
+
+        JSONObject response = new JSONObject();
+
+        response.put("userId", String.valueOf(getId()));
+        response.put("firstName", getName());
+        response.put("lastName", getLastname());
+        response.put("email", getEmail());
+
+        if (userBookRates != null) {
+            JSONArray userRatedBooksArray = new JSONArray();
+
+            for (UserBookRating userBookRating : userBookRates) {
+                userRatedBooksArray.put(
+                        new JSONObject(
+                                "{" +
+                                        "\"ASIN\":\"" + userBookRating.getBook().getId() + "\"," +
+                                        "\"rate\":\"" + userBookRating.getRate() + "\"" +
+                                        "}"
+                        )
+                );
+            }
+            if (!userRatedBooksArray.isEmpty()) {
+                response.put("ratedBooks", userRatedBooksArray);
+            }
+        }
+        return response.toString();
     }
 }

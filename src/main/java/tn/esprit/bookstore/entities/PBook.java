@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -34,4 +36,16 @@ public class PBook extends Book {
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    @Override
+    public String toString() {
+        JSONObject response = new JSONObject();
+        response.put("ASIN", String.valueOf(getId()));
+        response.put("title", getTitle());
+        //  response.put("author", getAuthor());
+        // response.put("genre", getCategory());
+
+        return response.toString();
+    }
+
 }
