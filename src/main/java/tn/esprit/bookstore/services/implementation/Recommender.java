@@ -21,7 +21,7 @@ public class Recommender {
         // Number of output recommendations
         private static final int NUM_RECOMMENDATIONS = 20;
         // Min value of recommended book rates
-        private static final int MIN_VALUE_RECOMMENDATION = 4;
+        private static final int MIN_VALUE_RECOMMENDATION = 1;
 
         @Autowired
         private PbookRepository bookRepository;
@@ -246,17 +246,18 @@ public class Recommender {
 
             Iterator<Map.Entry<Long, Double>> sortedREntries = sortedRecommendations.entrySet().iterator();
             JSONArray recommendedBooksArray = new JSONArray();
-
+//men
             int i = 0;
             while (sortedREntries.hasNext() && i < NUM_RECOMMENDATIONS) {
                 Map.Entry<Long, Double> entry = sortedREntries.next();
-                if (entry.getValue() >= MIN_VALUE_RECOMMENDATION) {
+                //if (entry.getValue() >= MIN_VALUE_RECOMMENDATION) {
                     JSONObject recommendedBooks = new JSONObject("{}");
+
                     recommendedBooks.put("Book Title", books.get(entry.getKey()));
                     recommendedBooks.put("Rate", Utils.round(entry.getValue(), 1));
                     recommendedBooksArray.put(recommendedBooks);
                     i++;
-                }
+
             }
             System.out.println(recommendedBooksArray.toString());
             return recommendedBooksArray.toString();

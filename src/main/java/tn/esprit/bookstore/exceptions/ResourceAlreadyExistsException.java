@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.OK)
 public class ResourceAlreadyExistsException extends Exception {
 
-    /**
-     * Instantiates a new Resource not found exception.
-     *
-     * @param message the message
-     */
+
     public ResourceAlreadyExistsException(String message) {
         super(message);
     }
