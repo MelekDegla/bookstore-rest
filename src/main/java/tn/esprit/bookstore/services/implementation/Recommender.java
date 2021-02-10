@@ -2,7 +2,9 @@ package tn.esprit.bookstore.services.implementation;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tn.esprit.bookstore.entities.PBook;
 import tn.esprit.bookstore.entities.utils.Utils;
 import tn.esprit.bookstore.entities.utils.ValueComparator;
 import tn.esprit.bookstore.repository.BookRepository;
@@ -20,6 +22,12 @@ public class Recommender {
         private static final int NUM_RECOMMENDATIONS = 20;
         // Min value of recommended book rates
         private static final int MIN_VALUE_RECOMMENDATION = 4;
+
+        @Autowired
+        private PbookRepository bookRepository;
+
+        @Autowired
+        private UserRepository userRepository;
 
         /**
          * Map with the user id as key and its ratings as value that is a map with book ASIN as key and its rating as value
@@ -55,22 +63,10 @@ public class Recommender {
             this.averageRating = averageRating;
         }
 
-        /**
-         * Get the k-nearest neighbourhoods using Pearson:
-         * sim(i,j) = numerator / (sqrt(userDenominator^2) * sqrt(otherUserDenominator^2))
-         * numerator = sum((r(u,i) - r(u)) * (r(v,i) - r(v)))
-         * userDenominator = sum(r(u,i) - r(i))
-         * otherUserDenominator = sum(r(v,i) - r(v))
-         * r(u,i): rating of the book i by the user u
-         * r(u): average rating of the user u
-         *
-         * @param userRatings ratings of the user
-         * @return nearest neighbourhoods
-         */
         private Map<Long, Double> getNeighbourhoods(Map<Long, Integer> userRatings) {
             Map<Long, Double> neighbourhoods = new HashMap<>();
             ValueComparator valueComparator = new ValueComparator(neighbourhoods);
-            Map<Long, Double> sortedNeighbourhoods = new TreeMap<Long,Double>((Comparator<? super Long>) valueComparator);
+            Map<Long, Double> sortedNeighbourhoods = new TreeMap<>(valueComparator);
 
             double userAverage = getAverage(userRatings);
 
@@ -184,7 +180,7 @@ public class Recommender {
             return userAverage / userRatings.size();
         }
 
-        public String recommendedBooks(Long userId, UserRepository userRepository, PbookRepository bookRepository) {
+        public String recommendedBooks(Long userId) {
 
             Map<Long, Double> averageRating = new HashMap<>();
             Map<Long, Map<Long, Integer>> myRatesMap = new TreeMap<>();
@@ -196,6 +192,8 @@ public class Recommender {
 
                 userItem.getUserBookRating().forEach(userBookRating -> {
                             if (userBookRating.getId().getuserId().compareTo(userID) == 0) {
+                                System.out.println(userBookRating.getRate());
+                                System.out.println(userBookRating.getId().getASIN());
                                 userRatings.put(userBookRating.getId().getASIN(), userBookRating.getRate());
                             }
                         }
@@ -234,13 +232,16 @@ public class Recommender {
 
             Map<Long, String> books = new HashMap<>();
 
-            bookRepository.findAll().forEach(book -> books.put(book.getId(), book.getTitle()));
+            bookRepository.findAll()
+                    .forEach(book ->
+                            books.put(book.getId(), book.getTitle()));
 
             Map<Long, Double> neighbourhoods = getNeighbourhoods(myRatesMap.get(userId));
             Map<Long, Double> recommendations = getRecommendations(myRatesMap.get(userId), neighbourhoods, books);
 
             ValueComparator valueComparator = new ValueComparator(recommendations);
-            Map<Long, Double> sortedRecommendations = new TreeMap<Long,Double>((Comparator<? super Long>) valueComparator);
+
+            Map<Long, Double> sortedRecommendations = new TreeMap<>(valueComparator);
             sortedRecommendations.putAll(recommendations);
 
             Iterator<Map.Entry<Long, Double>> sortedREntries = sortedRecommendations.entrySet().iterator();
@@ -257,6 +258,7 @@ public class Recommender {
                     i++;
                 }
             }
+            System.out.println(recommendedBooksArray.toString());
             return recommendedBooksArray.toString();
         }
 

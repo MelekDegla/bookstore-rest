@@ -1,8 +1,9 @@
 package tn.esprit.bookstore.entities.utils;
 
+import java.util.Comparator;
 import java.util.Map;
 
-public class ValueComparator {
+public class ValueComparator implements Comparator<Long> {
     private final Map<Long, Double> base;
 
     public ValueComparator(Map<Long, Double> base) {

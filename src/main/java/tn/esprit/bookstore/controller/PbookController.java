@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +26,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Controller
+@RestController
 @RequestMapping("/book/")
 public class PbookController {
     final IPbookService pbookService;
@@ -35,7 +36,6 @@ public class PbookController {
     Recommender recommender;
     @Autowired
     private UserRepository userRepository;
-    private PbookRepository bookRepository;
 
     public PbookController(IPbookService pbookService) {
         this.pbookService = pbookService;
@@ -142,12 +142,11 @@ public class PbookController {
     @GetMapping(value = "/recommended", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getRecommendedBooksByUserId(@RequestParam("userId") Long userId)
             throws ResourceNotFoundException {
-
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found!");
         }
 
-        String recommendedBooks = recommender.recommendedBooks(userId, userRepository, bookRepository);
+        String recommendedBooks = recommender.recommendedBooks(userId);
 
         return ResponseEntity.ok().body(recommendedBooks);
     }
