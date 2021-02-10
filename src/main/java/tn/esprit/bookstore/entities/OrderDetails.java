@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,10 +12,12 @@ public class OrderDetails {
 
     @ManyToOne
     @JoinColumn(name = "orderId", insertable = false, updatable = false)
+    @JsonIgnoreProperties("orderDetails")
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "bookId", insertable = false, updatable = false)
+    @JsonIgnoreProperties("orderDetails")
     private  PBook book;
 
     private int quantity;
@@ -27,6 +31,9 @@ public class OrderDetails {
     }
 
     public OrderDetailsPK getOrderDetailsPK() {
+        orderDetailsPK = new OrderDetailsPK();
+        orderDetailsPK.setOrderId(order.getId());
+        orderDetailsPK.setBookId(book.getId());
         return orderDetailsPK;
     }
 

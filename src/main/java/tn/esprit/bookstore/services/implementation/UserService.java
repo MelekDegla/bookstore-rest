@@ -1,6 +1,7 @@
 package tn.esprit.bookstore.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,8 +53,8 @@ public class UserService implements IUserService, UserDetailsService {
     public User getAuthenticatedCustomer() {
         {
             // TODO Auto-generated method stub
-            Long id = 1l;
-            return userRepository.findById(id).orElse(null);
+
+            return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         }
     }
 

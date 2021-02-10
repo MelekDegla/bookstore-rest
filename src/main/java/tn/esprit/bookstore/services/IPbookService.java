@@ -16,7 +16,7 @@ public interface IPbookService {
     List<PBook> findAll();
 
     void deleteById(Long id);
-    List<PBook> findByCategory(Long id );
+  //  List<PBook> findByCategory(Long id );
 
     public PBook findBookByTitle(String title);
 

@@ -26,11 +26,10 @@ public class OrderDetailsController {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody OrderDetails orderDetails){
-        if(orderDetails.getOrderDetailsPK() == null){
+
             Optional<OrderDetails> orderDetails1 = Optional.of(orderDetailsService.save(orderDetails));
             return ResponseEntity.created(null).body(orderDetails1);
-        }
-        return ResponseEntity.badRequest().build();
+
 
     }
 

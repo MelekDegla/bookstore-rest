@@ -35,6 +35,7 @@ public class User {
     private String photoUrl;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
     private List<Order> orders;
 
     @ManyToMany(mappedBy = "users")
@@ -48,7 +49,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn( name = "role_id")})
     @JsonIgnoreProperties("users")
     private List<Role> roles;

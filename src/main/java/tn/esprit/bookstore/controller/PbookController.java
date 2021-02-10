@@ -1,6 +1,8 @@
 package tn.esprit.bookstore.controller;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,12 +20,12 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Controller
-@RequestMapping("/book/")
+@RestController
+@RequestMapping("book")
 public class PbookController {
     final IPbookService pbookService;
     long bookFreeId;
-     double bookPrice;
+    double bookPrice;
     public PbookController(IPbookService pbookService) {
         this.pbookService = pbookService;
     }
@@ -33,6 +35,16 @@ public class PbookController {
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(pbookService.findAll());
     }
+
+    @GetMapping("categories/{names}")
+    public List<PBook> findAllBooksFilteredByCategories(@PathVariable String names) {
+        return pbookService.getBooksFilteredByCategories(names);
+    }
+    @GetMapping("recomadation")
+    public List<PBook> findRecomandedForYou() {
+        return pbookService.showRelatedBooks();
+    }
+
     @GetMapping("byid/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id){
         return ResponseEntity.ok(pbookService.findById(id));
@@ -64,10 +76,10 @@ public class PbookController {
         pbookService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("cat/{id}")
+    /*@GetMapping("cat/{id}")
     public ResponseEntity<?> findByCategory(@PathVariable("id") Long id){
         return ResponseEntity.ok(pbookService.findByCategory(id));
-    }
+    }*/
 
     @PostMapping("file")
     @ResponseBody
@@ -97,11 +109,10 @@ public class PbookController {
             }
         }
 
-
         return(book);
     }
 
-    @Scheduled(fixedDelay=20000)
+   @Scheduled(fixedDelay=20000)
     public void freebookRand(){
         List<PBook> books =pbookService.findAll();
         int nbBooks= books.size();
@@ -117,7 +128,7 @@ public class PbookController {
         System.out.println("free book");
 
     }
-   @Scheduled(fixedDelay=20000)
+   @Scheduled(fixedDelay=10000)
     public void endFreebookRand() {
         PBook bookshosen = pbookService.findById(bookFreeId);
         bookshosen.setPrice(bookPrice);
