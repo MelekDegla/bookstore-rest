@@ -89,6 +89,7 @@ public class EbookService implements IEbookService {
         event.setDescription("Book " + exisitngBook.getTitle() + " Event");
         event.setTitle("Book " + exisitngBook.getTitle() + " Event");
         event.setDate(LocalDateTime.now().plusDays(3));
+        event.setPlace("live event ");
         eventService.add(event);
         return  event;
 

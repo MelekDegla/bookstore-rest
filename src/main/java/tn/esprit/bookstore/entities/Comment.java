@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Comment extends Review {
     private Instant updateAt;
 
     @ManyToOne
+    @JsonIgnoreProperties("comments")
+
     private Book book;
 
     public Book getBook() {
