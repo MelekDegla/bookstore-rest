@@ -31,12 +31,10 @@ public class CategoryController {
 
     @PostMapping("addcategory")
     public ResponseEntity<?> save(@RequestBody Category category){
-        if(category.getId() == null){
+
             Optional<Category> category1 = Optional.of(categoryService.save(category));
             return ResponseEntity.created(null).body(category1);
-        } else {
-            throw new SavingIdException(HttpStatus.BAD_REQUEST, "entity id must be null");
-        }
+
 
     }
 

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tn.esprit.bookstore.entities.PBook;
+import tn.esprit.bookstore.entities.User;
 import tn.esprit.bookstore.entities.utils.Utils;
 import tn.esprit.bookstore.entities.utils.ValueComparator;
 import tn.esprit.bookstore.repository.BookRepository;
@@ -246,7 +247,7 @@ public class Recommender {
 
             Iterator<Map.Entry<Long, Double>> sortedREntries = sortedRecommendations.entrySet().iterator();
             JSONArray recommendedBooksArray = new JSONArray();
-//men
+
             int i = 0;
             while (sortedREntries.hasNext() && i < NUM_RECOMMENDATIONS) {
                 Map.Entry<Long, Double> entry = sortedREntries.next();
@@ -259,7 +260,6 @@ public class Recommender {
                     i++;
 
             }
-            System.out.println(recommendedBooksArray.toString());
             return recommendedBooksArray.toString();
         }
 

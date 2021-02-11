@@ -1,6 +1,7 @@
 package tn.esprit.bookstore.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -19,22 +20,26 @@ public class Category  {
     @Column(nullable=false )
     private String description;
 
+
     @ManyToOne
+    //@JsonIgnore
     @JoinColumn(name="parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
     @JsonIgnoreProperties("parent")
+    //@JsonIgnore
     private Set<Category> children = new HashSet<>();
 
     @OneToMany(mappedBy = "category")
+   // @JsonIgnore
     @JsonIgnoreProperties("category")
 
     private List<EBook> eBooks;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnoreProperties("category" +
-            "")
+    @JsonIgnoreProperties("category" +"")
+    //@JsonIgnore
 
     private List<PBook> pBooks;
 
@@ -136,68 +141,6 @@ public class Category  {
         this.pBooks = pBooks;
     }
 
-  /*  @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    public long id;
 
-    @Column(nullable=false )
-    private String title;
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-
-
-    @Column(nullable=false )
-    private String description;
-
-
-    @OneToMany(mappedBy = "category")
-    private List<EBook> eBooks;
-
-    @OneToMany(mappedBy = "category")
-    private List<PBook> pBooks;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<EBook> geteBooks() {
-        return eBooks;
-    }
-
-    public void seteBooks(List<EBook> eBooks) {
-        this.eBooks = eBooks;
-    }
-
-    public List<PBook> getpBooks() {
-        return pBooks;
-    }
-
-    public void setpBooks(List<PBook> pBooks) {
-        this.pBooks = pBooks;
-    }*/
 }
 

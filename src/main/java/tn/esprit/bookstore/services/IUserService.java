@@ -12,4 +12,5 @@ public interface IUserService {
     public User findById(Long id);
     public List<User> findAll();
     public void deleteById(Long id);
+    public User getAuthenticatedCustomer();
 }

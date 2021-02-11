@@ -11,6 +11,7 @@ public class PBook extends Book {
     private int quantity;
 
     @OneToMany(mappedBy = "book")
+
     private List<OrderDetails> orderDetails;
     public PBook(String isbn, String title, String description, String imageUrl, double price, int quantity) {
         super(isbn, title, description, imageUrl, price);

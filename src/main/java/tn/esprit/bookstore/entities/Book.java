@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.JSONObject;
 
 import javax.persistence.*;
@@ -29,12 +31,15 @@ public class Book {
     private Set<UserBookRating> userBookRatings;
 
     @ManyToOne
+   // @JsonIgnoreProperties({"eBooks", "pBooks"})
     private Author author;
 
     @ManyToOne
+   // @JsonIgnoreProperties({"eBooks", "pBooks", "parent", "children"})
     private Category category;
 
     @OneToMany(mappedBy = "book")
+    //@JsonIgnoreProperties({"eBooks", "pBooks"})
     private List<Comment> comments;
 
     public List<Comment> getComments() {
