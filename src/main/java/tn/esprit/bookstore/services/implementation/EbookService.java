@@ -1,18 +1,20 @@
 package tn.esprit.bookstore.services.implementation;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.bookstore.entities.Book;
 import tn.esprit.bookstore.entities.EBook;
 import tn.esprit.bookstore.entities.Event;
+import tn.esprit.bookstore.repository.CommentRepository;
 import tn.esprit.bookstore.repository.EbookRepository;
+import tn.esprit.bookstore.repository.EventRepository;
 import tn.esprit.bookstore.services.IEbookService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.lang.String;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,8 @@ public class EbookService implements IEbookService {
     final EbookRepository ebookRepository;
     @Autowired
     EventService eventService;
+    @Autowired
+    CommentRepository commentrep;
     @Autowired
     public EbookService(EbookRepository ebookRepository) {
         this.ebookRepository = ebookRepository;
@@ -66,20 +70,31 @@ public class EbookService implements IEbookService {
                 .collect(Collectors.toList());
         return filteredBooks;
     }
+
     @Transactional
-    public void openEventOnBook() {
-        List<EBook> books = ebookRepository.;
+    public Event openEventOnBook() {
+        List<EBook> books = ebookRepository.findAll();
+        Map<Long,Integer> bookAndNumberComment=new HashMap<>();
+        Map<Long,Integer> treeval=new HashMap<>();
+
+        books.forEach((eBook -> bookAndNumberComment.put(eBook.getId(), eBook.getComments().size())));
+      treeval=bookAndNumberComment.entrySet()
+              .stream()
+              .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         Book exisitngBook= new Book();
-        List<EBook> books2 = books.stream().limit(1).collect(Collectors.toList());
-        exisitngBook = books2.get(0);
+        Long bookeventId = treeval.keySet().stream().findFirst().get();
+        exisitngBook= ebookRepository.findById(bookeventId).orElse(null);
         Event event = new Event();
         event.setDescription("Book " + exisitngBook.getTitle() + " Event");
         event.setTitle("Book " + exisitngBook.getTitle() + " Event");
         event.setDate(LocalDateTime.now().plusDays(3));
         eventService.add(event);
+        return  event;
 
 
 
     }
+
 
 }

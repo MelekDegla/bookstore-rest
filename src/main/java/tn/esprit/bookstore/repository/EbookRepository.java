@@ -11,5 +11,7 @@ import java.util.List;
 public interface EbookRepository extends JpaRepository<EBook, Long> {
     @Query(value = "SELECT * FROM book b WHERE b.category_id = ?1", nativeQuery = true)
     List<EBook> findByCategory(Long id);
+
+
 }
 

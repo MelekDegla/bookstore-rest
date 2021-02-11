@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.bookstore.entities.EBook;
+import tn.esprit.bookstore.entities.Event;
 import tn.esprit.bookstore.entities.PBook;
 import tn.esprit.bookstore.exceptions.SavingIdException;
 import tn.esprit.bookstore.services.IEbookService;
@@ -16,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/ebook/")
 public class EbookController {
     final IEbookService ebookService;
@@ -120,6 +121,11 @@ public class EbookController {
             }
 
         return(book);
+    }
+    @GetMapping("openevent")
+
+public Event openEventOnBook (){
+        return ebookService.openEventOnBook();
     }
 
 }

@@ -1,6 +1,7 @@
 package tn.esprit.bookstore.services;
 
 import tn.esprit.bookstore.entities.EBook;
+import tn.esprit.bookstore.entities.Event;
 import tn.esprit.bookstore.entities.PBook;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface IEbookService {
     List<EBook> findByCategory(Long id );
 
        List<EBook> filterBooks(String pattern);
-
+Event openEventOnBook();
 
 }
