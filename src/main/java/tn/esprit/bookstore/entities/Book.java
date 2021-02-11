@@ -1,5 +1,7 @@
 package tn.esprit.bookstore.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class Book {
     private Category category;
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnoreProperties({"book"})
     private List<Comment> comments;
 
     public List<Comment> getComments() {

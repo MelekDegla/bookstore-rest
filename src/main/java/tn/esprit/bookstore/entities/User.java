@@ -42,9 +42,12 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
+
     private List<FeedBack> feedBacks;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
     private List<Comment> comments;
 
     @ManyToMany

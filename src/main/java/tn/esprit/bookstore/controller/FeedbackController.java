@@ -4,10 +4,14 @@ package tn.esprit.bookstore.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.bookstore.DTOs.AddFeedbackDTO;
+import tn.esprit.bookstore.DTOs.AnswerFeedbackDTO;
 import tn.esprit.bookstore.entities.FeedBack;
 import tn.esprit.bookstore.services.IFeedbackService;
+import tn.esprit.bookstore.services.implementation.FeedbackService;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +30,7 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody FeedBack feedBack){
+    public ResponseEntity<?> save(@RequestBody AddFeedbackDTO feedBack){
 
             Optional<FeedBack> feedBack1 = Optional.of(feedbackService.save(feedBack));
             return ResponseEntity.created(null).body(feedBack1);
@@ -35,9 +39,9 @@ public class FeedbackController {
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody FeedBack feedBack){
+    public ResponseEntity<?> answer(@RequestBody AnswerFeedbackDTO feedBack){
 
-            FeedBack feedBack1 = feedbackService.save(feedBack);
+            FeedBack feedBack1 = feedbackService.answer(feedBack);
             return ResponseEntity.accepted().body(feedBack1);
 
     }
@@ -46,5 +50,11 @@ public class FeedbackController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         feedbackService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search/{search}")
+    public ResponseEntity<?> search(@PathVariable("search") String search){
+        List<FeedBack> list = feedbackService.search(search);
+        return ResponseEntity.accepted().body(list);
     }
 }
